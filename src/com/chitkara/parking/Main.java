@@ -16,6 +16,7 @@ public class Main {
             System.out.println("6. Find Slot by Vehicle Number");
             System.out.println("7. View Waitlist");
             System.out.println("8. Exit");
+            System.out.println("9. Check Total Fare"); // ✅ NEW FEATURE
             System.out.print("Choose an option: ");
             int choice = sc.nextInt();
             switch (choice) {
@@ -36,20 +37,23 @@ public class Main {
 
                     User u = new User(name, vehicle, contact);
                     ps.bookSlot(u, in, out, type, sc);
-                    break;
+                    ps.saveBookingsToFile();
+                    ps.saveWaitlistToFile();
                 }
                 case 3 -> {
                     System.out.print("Enter Booking ID to cancel: ");
                     int cancelId = sc.nextInt();
                     ps.cancelBooking(cancelId);
-                    break;
+                    ps.saveBookingsToFile();
+                    ps.saveWaitlistToFile();
                 }
                 case 4 -> {
                     System.out.print("Enter Booking ID to update: ");
                     int updId = sc.nextInt();
                     sc.nextLine();  // consume newline
                     ps.updateBooking(updId, sc);
-                    break;
+                    ps.saveBookingsToFile();
+                    ps.saveWaitlistToFile();
                 }
                 case 5 -> ps.viewAllBookings();
                 case 6 -> {
@@ -57,7 +61,6 @@ public class Main {
                     System.out.print("Enter your vehicle number: ");
                     String vehicleNumber = sc.nextLine();
                     ps.findSlotByVehicle(vehicleNumber);
-                    break;
                 }
                 case 7 -> ps.viewWaitlist();
                 case 8 -> {
@@ -67,7 +70,12 @@ public class Main {
                     sc.close();
                     return;
                 }
-
+                case 9 -> { // ✅ NEW CASE
+                    sc.nextLine();  // Consume newline
+                    System.out.print("Enter vehicle number: ");
+                    String vehicleNumber = sc.nextLine();
+                    ps.checkFareByVehicleNumber(vehicleNumber);
+                }
                 default -> System.out.println("Invalid option.");
             }
         }

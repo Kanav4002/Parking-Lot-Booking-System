@@ -62,6 +62,7 @@ public class ParkingSystem {
             String input = sc.nextLine().trim();
             if (input.equalsIgnoreCase("Y")) {
                 waitlist.addToWaitlist(u);
+                saveWaitlistToFile();
                 System.out.println("✅ You’ve been added to the waitlist.");
             } else {
                 System.out.println("❌ Booking canceled. You are not added to waitlist.");
@@ -360,6 +361,27 @@ public class ParkingSystem {
             System.out.println("✅ Loaded " + count + " waitlist users.");
         } catch (IOException e) {
             System.out.println("⚠️ Error loading waitlist: " + e.getMessage());
+        }
+    }
+
+    public void checkFareByVehicleNumber(String vehicleNumber) {
+        List<Booking> bookingList = new ArrayList<>(bookings.values());
+        bookingList.sort(Comparator.comparing(b -> b.getUser().getVehicleNumber()));  // sort (optional)
+
+        boolean found = false;
+        for (Booking b : bookingList) {
+            if (b.getUser().getVehicleNumber().equalsIgnoreCase(vehicleNumber)) {
+                System.out.println("\n📋 Booking Details for Vehicle: " + vehicleNumber);
+                System.out.println("Entry Time: " + b.getTimeIn());
+                System.out.println("Exit Time : " + b.getTimeOut());
+                System.out.println("Total Fare: ₹" + b.getFee());
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("⚠️ No booking found for vehicle number: " + vehicleNumber);
         }
     }
 }
